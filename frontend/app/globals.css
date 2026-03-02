@@ -1,26 +1,89 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
+/* ─── Design tokens via Tailwind v4 @theme ──────────────────────────────────── */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Brand — teal palette */
+  --color-brand:           #25ad91;
+  --color-brand-hover:     #1e9a80;
+  --color-brand-dim:       #178a72;
+  --color-brand-muted:     #e6f7f3;
+  --color-brand-soft:      rgba(37,173,145,0.07);
+  --color-brand-ring:      rgba(37,173,145,0.30);
+  --color-brand-glow:      rgba(37,173,145,0.18);
+
+  /* Surfaces — light mode */
+  --color-base:            #f2f3f5;
+  --color-surface-1:       #ffffff;
+  --color-surface-2:       #f7f7f8;
+  --color-surface-3:       #ebebeb;
+  --color-surface-4:       #e0e0e0;
+  --color-sidebar:         #ffffff;
+  --color-input-bg:        #ffffff;
+  --color-bubble:          #f5f5f5;
+  --color-bubble-user:     #25ad91;
+
+  /* Borders */
+  --color-border:          #e0e0e0;
+  --color-border-dim:      #ebebeb;
+  --color-border-bright:   #d0d0d0;
+  --color-border-focus:    rgba(37,173,145,0.40);
+
+  /* Text hierarchy */
+  --color-text-primary:    #1a1a1a;
+  --color-text-secondary:  #6b6b6b;
+  --color-text-muted:      #999999;
+  --color-text-faint:      #cccccc;
+
+  /* Status */
+  --color-danger:          #ef4444;
+
+  /* Fonts */
+  --font-sans:  var(--font-poppins);
+  --font-mono:  var(--font-poppins);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ─── Global reset & light mode ──────────────────────────────────────────────── */
+:root { color-scheme: light; }
+
+html, body {
+  background-color: #f2f3f5;
+  color: #1a1a1a;
+  height: 100%;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ─── Gradient text utility ──────────────────────────────────────────────────── */
+.gradient-text {
+  background: linear-gradient(120deg, #25ad91 0%, #1e9a80 45%, #5ec4ae 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
+
+/* ─── Typing indicator ───────────────────────────────────────────────────────── */
+@keyframes typing-bounce {
+  0%, 60%, 100% { transform: translateY(0);    opacity: 0.25; }
+  30%           { transform: translateY(-4px); opacity: 1;    }
+}
+.typing-dot { animation: typing-bounce 1.3s ease-in-out infinite; }
+.typing-dot:nth-child(2) { animation-delay: 0.16s; }
+.typing-dot:nth-child(3) { animation-delay: 0.32s; }
+
+/* ─── Message entrance animation ────────────────────────────────────────────── */
+@keyframes msg-in {
+  from { opacity: 0; transform: translateY(5px); }
+  to   { opacity: 1; transform: translateY(0);   }
+}
+.msg-animate { animation: msg-in 0.18s ease-out both; }
+
+/* ─── Avatar glow pulse ──────────────────────────────────────────────────────── */
+@keyframes avatar-glow {
+  0%, 100% { box-shadow: 0 0 0   0 rgba(37,173,145,0.20); }
+  50%       { box-shadow: 0 0 14px 0 rgba(37,173,145,0.40); }
+}
+.avatar-glow { animation: avatar-glow 3s ease-in-out infinite; }
+
+/* ─── Scrollbars ─────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar       { width: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #d0d0d0; border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: #b0b0b0; }
