@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+/* ─── Design tokens via Tailwind v4 @theme ──────────────────────────────────── */
+@theme inline {
+  /* Brand — teal palette */
+  --color-brand:           #25ad91;
+  --color-brand-hover:     #1e9a80;
+  --color-brand-dim:       #178a72;
+  --color-brand-muted:     #0a2920;
+  --color-brand-soft:      rgba(37,173,145,0.07);
+  --color-brand-ring:      rgba(37,173,145,0.30);
+  --color-brand-glow:      rgba(37,173,145,0.18);
+
+  /* Surfaces — dark mode */
+  --color-base:            #080808;
+  --color-surface-1:       #0e0e0e;
+  --color-surface-2:       #131313;
+  --color-surface-3:       #1a1a1a;
+  --color-surface-4:       #222222;
+  --color-sidebar:         #0a0a0a;
+  --color-input-bg:        #0e0e0e;
+  --color-bubble:          #1c1c1c;
+  --color-bubble-user:     #25ad91;
+
+  /* Borders */
+  --color-border:          #1a1a1a;
+  --color-border-dim:      #151515;
+  --color-border-bright:   #2a2a2a;
+  --color-border-focus:    rgba(37,173,145,0.40);
+
+  /* Text hierarchy */
+  --color-text-primary:    #efefef;
+  --color-text-secondary:  #a0a0a0;
+  --color-text-muted:      #555555;
+  --color-text-faint:      #333333;
+
+  /* Status */
+  --color-danger:          #ef4444;
+
+  /* Fonts */
+  --font-sans:  var(--font-poppins);
+  --font-mono:  var(--font-poppins);
+}
+
+/* ─── Global reset & light mode ──────────────────────────────────────────────── */
+:root { color-scheme: dark; }
+
+html, body {
+  background-color: #080808;
+  color: #efefef;
+  height: 100%;
+}
+
+/* ─── Gradient text utility ──────────────────────────────────────────────────── */
+.gradient-text {
+  background: linear-gradient(120deg, #25ad91 0%, #1e9a80 45%, #5ec4ae 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Typing indicator ───────────────────────────────────────────────────────── */
+@keyframes typing-bounce {
+  0%, 60%, 100% { transform: translateY(0);    opacity: 0.25; }
+  30%           { transform: translateY(-4px); opacity: 1;    }
+}
+.typing-dot { animation: typing-bounce 1.3s ease-in-out infinite; }
+.typing-dot:nth-child(2) { animation-delay: 0.16s; }
+.typing-dot:nth-child(3) { animation-delay: 0.32s; }
+
+/* ─── Message entrance animation ────────────────────────────────────────────── */
+@keyframes msg-in {
+  from { opacity: 0; transform: translateY(5px); }
+  to   { opacity: 1; transform: translateY(0);   }
+}
+.msg-animate { animation: msg-in 0.18s ease-out both; }
+
+/* ─── Avatar glow pulse ──────────────────────────────────────────────────────── */
+@keyframes avatar-glow {
+  0%, 100% { box-shadow: 0 0 0   0 rgba(37,173,145,0.20); }
+  50%       { box-shadow: 0 0 14px 0 rgba(37,173,145,0.40); }
+}
+.avatar-glow { animation: avatar-glow 3s ease-in-out infinite; }
+
+/* ─── Scrollbars ─────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar       { width: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: #3a3a3a; }
