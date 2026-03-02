@@ -9,16 +9,16 @@ export function RightSidebar() {
 
   return (
     <aside
-      className="w-72 h-full flex flex-col shrink-0 rounded-2xl overflow-hidden"
+      className="w-80 h-full flex flex-col shrink-0 rounded-2xl overflow-hidden"
       style={{
         background: '#0a0a0a',
         border: '1px solid #1a1a1a',
       }}
     >
       {/* Header */}
-      <div className="px-4 pt-4 pb-3 space-y-3">
+      <div className="px-5 pt-5 pb-4 space-y-4">
         <div className="flex items-center justify-between">
-          <p className="text-[10px] font-medium text-white/50 uppercase tracking-widest">
+          <p className="text-[11px] font-medium text-white/50 uppercase tracking-widest">
             Knowledge Base
           </p>
         </div>

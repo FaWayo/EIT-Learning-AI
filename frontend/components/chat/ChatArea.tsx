@@ -54,10 +54,10 @@ export function ChatArea({ chatId }: ChatAreaProps) {
     <div className="flex flex-col h-full">
       {/* Message list */}
       <div className="flex-1 overflow-y-auto">
-        <div className="max-w-3xl mx-auto px-4 py-8 space-y-7">
+        <div className="max-w-3xl mx-auto px-6 py-10 space-y-8">
           {messages.length === 0 ? (
-            <div className="flex flex-col items-center justify-center gap-2 py-20">
-              <p className="text-text-muted text-sm">
+            <div className="flex flex-col items-center justify-center gap-3 py-24">
+              <p className="text-text-muted text-base">
                 Start the conversation below
               </p>
             </div>
@@ -73,19 +73,19 @@ export function ChatArea({ chatId }: ChatAreaProps) {
 
       {/* Input bar */}
       <div
-        className="shrink-0 px-4 pb-5 pt-3"
+        className="shrink-0 px-6 pb-6 pt-4"
         style={{
           background: 'linear-gradient(to top, #0e0e0e 60%, transparent)',
         }}
       >
-        <div className="max-w-3xl mx-auto space-y-2">
+        <div className="max-w-3xl mx-auto space-y-3">
           <ChatInput
             onSend={handleSend}
             disabled={state.isTyping}
             value={inputValue}
             onChange={setInputValue}
           />
-          <p className="text-center text-[11px] text-text-muted">
+          <p className="text-center text-xs text-text-muted">
             AI responses are based on your uploaded course materials.
           </p>
         </div>

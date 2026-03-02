@@ -31,7 +31,7 @@ export function ResourceItem({ resource, onDelete }: ResourceItemProps) {
 
   return (
     <div
-      className="group flex items-center gap-2.5 px-3 py-2.5 rounded-xl cursor-default transition-all duration-150"
+      className="group flex items-center gap-3 px-4 py-3 rounded-xl cursor-default transition-all duration-150"
       style={{ background: 'transparent' }}
       onMouseEnter={(e) =>
         ((e.currentTarget as HTMLElement).style.background = '#131313')
@@ -42,33 +42,33 @@ export function ResourceItem({ resource, onDelete }: ResourceItemProps) {
     >
       {/* File type icon */}
       <span
-        className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0"
+        className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
         style={{ background: cfg.bg }}
       >
-        <Icon className="w-3.5 h-3.5" style={{ color: cfg.color }} />
+        <Icon className="w-4 h-4" style={{ color: cfg.color }} />
       </span>
 
       {/* File info */}
       <div className="flex-1 min-w-0">
         <p
-          className="text-xs truncate leading-tight"
+          className="text-sm truncate leading-tight"
           style={{ color: '#ffffff' }}
           title={resource.name}
         >
           {resource.name}
         </p>
-        <div className="flex items-center gap-1.5 mt-0.5">
+        <div className="flex items-center gap-2 mt-1">
           <span
-            className="text-[10px] font-mono font-semibold px-1 py-0 rounded"
+            className="text-[11px] font-mono font-semibold px-1.5 py-0.5 rounded"
             style={{ color: cfg.color, background: cfg.bg }}
           >
             {cfg.label}
           </span>
-          <span className="text-[10px] text-white/40">
+          <span className="text-[11px] text-white/40">
             {formatBytes(resource.size)}
           </span>
           {resource.chatId === null && (
-            <span className="text-[10px] text-white/40">· global</span>
+            <span className="text-[11px] text-white/40">· global</span>
           )}
         </div>
       </div>
@@ -76,7 +76,7 @@ export function ResourceItem({ resource, onDelete }: ResourceItemProps) {
       {/* Delete */}
       <button
         onClick={() => onDelete(resource.id)}
-        className="opacity-0 group-hover:opacity-100 p-1 rounded-lg transition-all shrink-0"
+        className="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg transition-all shrink-0"
         style={{ color: '#555' }}
         onMouseEnter={(e) =>
           ((e.currentTarget as HTMLElement).style.color = '#ef4444')
@@ -86,7 +86,7 @@ export function ResourceItem({ resource, onDelete }: ResourceItemProps) {
         }
         title="Remove resource"
       >
-        <Trash2Icon className="w-3 h-3" />
+        <Trash2Icon className="w-4 h-4" />
       </button>
     </div>
   );

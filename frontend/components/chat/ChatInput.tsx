@@ -17,7 +17,7 @@ export function ChatInput({ onSend, disabled = false, value, onChange }: ChatInp
     const el = textareaRef.current;
     if (!el) return;
     el.style.height = 'auto';
-    el.style.height = Math.min(el.scrollHeight, 140) + 'px';
+    el.style.height = Math.min(el.scrollHeight, 180) + 'px';
   }, [value]);
 
   function handleSubmit() {
@@ -36,7 +36,7 @@ export function ChatInput({ onSend, disabled = false, value, onChange }: ChatInp
 
   return (
     <div
-      className="flex items-end gap-3 px-4 py-3 rounded-2xl border transition-all duration-200"
+      className="flex items-end gap-3 px-5 py-4 rounded-2xl border transition-all duration-200"
       style={{
         background: 'rgba(14,14,14,0.90)',
         backdropFilter: 'blur(12px)',
@@ -53,14 +53,14 @@ export function ChatInput({ onSend, disabled = false, value, onChange }: ChatInp
         onKeyDown={handleKeyDown}
         disabled={disabled}
         placeholder="Ask anything about your course materials..."
-        className="flex-1 resize-none text-text-primary placeholder:text-text-muted outline-none overflow-y-auto disabled:opacity-40 text-sm leading-relaxed"
-        style={{ maxHeight: '140px', background: 'transparent' }}
+        className="flex-1 resize-none text-text-primary placeholder:text-text-muted outline-none overflow-y-auto disabled:opacity-40 text-base leading-relaxed"
+        style={{ maxHeight: '180px', background: 'transparent' }}
       />
       <button
         type="button"
         onClick={handleSubmit}
         disabled={!hasContent || disabled}
-        className="shrink-0 w-8 h-8 rounded-xl flex items-center justify-center transition-all duration-200 disabled:cursor-not-allowed"
+        className="shrink-0 w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200 disabled:cursor-not-allowed"
         style={{
           background: hasContent && !disabled
             ? 'linear-gradient(135deg, #25ad91 0%, #1e9a80 100%)'
@@ -73,7 +73,7 @@ export function ChatInput({ onSend, disabled = false, value, onChange }: ChatInp
         }}
       >
         <ArrowUpIcon
-          className="w-4 h-4"
+          className="w-5 h-5"
           style={{ color: hasContent && !disabled ? '#fff' : '#555' }}
         />
       </button>

@@ -38,7 +38,7 @@ export function UploadButton({ onFileSelect, disabled = false }: UploadButtonPro
       <button
         onClick={() => fileInputRef.current?.click()}
         disabled={disabled || !!pendingFile}
-        className="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl text-white font-medium text-sm transition-all duration-150 disabled:opacity-40 disabled:cursor-not-allowed"
+        className="w-full flex items-center justify-center gap-2.5 px-4 py-3 rounded-xl text-white font-medium text-sm transition-all duration-150 disabled:opacity-40 disabled:cursor-not-allowed"
         style={{
           background: 'linear-gradient(135deg, #25ad91 0%, #1e9a80 100%)',
           boxShadow: '0 0 12px rgba(37,173,145,0.18)',
@@ -51,7 +51,7 @@ export function UploadButton({ onFileSelect, disabled = false }: UploadButtonPro
           (e.currentTarget as HTMLElement).style.boxShadow = '0 0 12px rgba(37,173,145,0.18)';
         }}
       >
-        <UploadIcon className="w-4 h-4" strokeWidth={2.5} />
+        <UploadIcon className="w-5 h-5" strokeWidth={2.5} />
         Upload File
       </button>
 
@@ -65,11 +65,11 @@ export function UploadButton({ onFileSelect, disabled = false }: UploadButtonPro
 
       {pendingFile && (
         <div
-          className="rounded-xl p-3 space-y-3"
+          className="rounded-xl p-4 space-y-3"
           style={{ background: '#131313', border: '1px solid #1f1f1f' }}
         >
           <p
-            className="text-xs truncate font-medium"
+            className="text-sm truncate font-medium"
             style={{ color: '#c0c0c0' }}
             title={pendingFile.name}
           >
@@ -85,7 +85,7 @@ export function UploadButton({ onFileSelect, disabled = false }: UploadButtonPro
               <button
                 key={s}
                 onClick={() => setScope(s)}
-                className="flex-1 text-xs py-1.5 transition-all duration-150 font-medium"
+                className="flex-1 text-sm py-2 transition-all duration-150 font-medium"
                 style={{
                   background: scope === s ? 'rgba(37,173,145,0.10)' : 'transparent',
                   color: scope === s ? '#25ad91' : '#555',
@@ -101,15 +101,15 @@ export function UploadButton({ onFileSelect, disabled = false }: UploadButtonPro
           <div className="flex gap-2">
             <button
               onClick={handleConfirm}
-              className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-medium text-white transition-all"
+              className="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-medium text-white transition-all"
               style={{ background: 'linear-gradient(135deg, #25ad91 0%, #1e9a80 100%)' }}
             >
-              <CheckIcon className="w-3 h-3" strokeWidth={2.5} />
+              <CheckIcon className="w-4 h-4" strokeWidth={2.5} />
               Upload
             </button>
             <button
               onClick={handleCancel}
-              className="px-3 py-1.5 rounded-lg text-xs transition-all"
+              className="px-4 py-2 rounded-lg text-sm transition-all"
               style={{ background: '#1a1a1a', color: '#555' }}
               onMouseEnter={(e) =>
                 ((e.currentTarget as HTMLElement).style.color = '#a0a0a0')
@@ -118,7 +118,7 @@ export function UploadButton({ onFileSelect, disabled = false }: UploadButtonPro
                 ((e.currentTarget as HTMLElement).style.color = '#555')
               }
             >
-              <XIcon className="w-3.5 h-3.5" />
+              <XIcon className="w-4 h-4" />
             </button>
           </div>
         </div>

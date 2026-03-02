@@ -39,55 +39,55 @@ export function LeftSidebar() {
 
   return (
     <aside
-      className="w-64 h-full flex flex-col shrink-0 rounded-2xl overflow-hidden"
+      className="w-72 h-full flex flex-col shrink-0 rounded-2xl overflow-hidden"
       style={{
         background: '#0a0a0a',
         border: '1px solid #1a1a1a',
       }}
     >
       {/* Brand header */}
-      <div className="px-4 py-4 flex items-center gap-2.5">
+      <div className="px-5 py-5 flex items-center gap-3">
         <div
-          className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0"
+          className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
           style={{ background: 'linear-gradient(135deg, #25ad91 0%, #1e9a80 100%)' }}
         >
-          <GraduationCapIcon className="w-4 h-4 text-white" strokeWidth={2} />
+          <GraduationCapIcon className="w-5 h-5 text-white" strokeWidth={2} />
         </div>
-        <span className="font-semibold text-sm tracking-tight">
+        <span className="font-semibold text-base tracking-tight">
           <span className="text-white">EIT AI</span>
         </span>
       </div>
 
       {/* New Chat button */}
-      <div className="px-3 pb-3">
+      <div className="px-4 pb-4">
         <button
           onClick={handleNewChat}
-          className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-white hover:text-white hover:bg-surface-2 transition-all duration-150 text-sm font-medium group"
+          className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-white hover:text-white hover:bg-surface-2 transition-all duration-150 text-sm font-medium group"
           style={{ border: '1px solid #1a1a1a' }}
         >
           <span
-            className="w-5 h-5 rounded-md flex items-center justify-center shrink-0 transition-colors"
+            className="w-6 h-6 rounded-md flex items-center justify-center shrink-0 transition-colors"
             style={{ background: 'rgba(37,173,145,0.10)' }}
           >
-            <PlusIcon className="w-3.5 h-3.5 text-brand" />
+            <PlusIcon className="w-4 h-4 text-brand" />
           </span>
           New Chat
         </button>
       </div>
 
       {/* Divider + section label */}
-      <div className="px-4 pb-2">
-        <p className="text-[10px] font-medium text-white/50 uppercase tracking-widest">
+      <div className="px-5 pb-2">
+        <p className="text-[11px] font-medium text-white/50 uppercase tracking-widest">
           Recent
         </p>
       </div>
 
       {/* Chat list */}
-      <nav className="flex-1 overflow-y-auto px-2 pb-4 space-y-0.5">
+      <nav className="flex-1 overflow-y-auto px-3 pb-4 space-y-1">
         {state.chats.length === 0 ? (
-          <div className="flex flex-col items-center justify-center gap-2 py-10 px-4">
-            <MessagesSquareIcon className="w-5 h-5 text-text-faint" />
-            <p className="text-white/40 text-xs text-center leading-relaxed">
+          <div className="flex flex-col items-center justify-center gap-3 py-12 px-4">
+            <MessagesSquareIcon className="w-6 h-6 text-text-faint" />
+            <p className="text-white/40 text-sm text-center leading-relaxed">
               No conversations yet
             </p>
           </div>
@@ -98,7 +98,7 @@ export function LeftSidebar() {
               <div
                 key={chat.id}
                 onClick={() => handleSelectChat(chat.id)}
-                className="group relative flex items-center rounded-xl px-3 py-2 cursor-pointer transition-all duration-150"
+                className="group relative flex items-center rounded-xl px-4 py-3 cursor-pointer transition-all duration-150"
                 style={{
                   background: isActive ? 'rgba(37,173,145,0.06)' : 'transparent',
                   borderLeft: isActive ? '2px solid rgba(37,173,145,0.60)' : '2px solid transparent',
@@ -112,7 +112,7 @@ export function LeftSidebar() {
                 }}
               >
                 <span
-                  className={`flex-1 truncate text-xs pr-6 leading-relaxed ${
+                  className={`flex-1 truncate text-sm pr-7 leading-relaxed ${
                     isActive ? 'text-white' : 'text-white/70'
                   }`}
                 >
@@ -120,7 +120,7 @@ export function LeftSidebar() {
                 </span>
                 <button
                   onClick={(e) => handleDelete(e, chat.id)}
-                  className="absolute right-2 opacity-0 group-hover:opacity-100 p-1 rounded-lg transition-all"
+                  className="absolute right-3 opacity-0 group-hover:opacity-100 p-1.5 rounded-lg transition-all"
                   style={{ color: '#555' }}
                   onMouseEnter={(e) =>
                     ((e.currentTarget as HTMLElement).style.color = '#ef4444')
@@ -130,7 +130,7 @@ export function LeftSidebar() {
                   }
                   title="Delete chat"
                 >
-                  <Trash2Icon className="w-3 h-3" />
+                  <Trash2Icon className="w-4 h-4" />
                 </button>
               </div>
             );
