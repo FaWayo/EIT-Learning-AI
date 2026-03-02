@@ -54,7 +54,7 @@ export function LeftSidebar() {
           <GraduationCapIcon className="w-4 h-4 text-white" strokeWidth={2} />
         </div>
         <span className="font-semibold text-sm tracking-tight">
-          <span className="text-text-secondary">EIT AI</span>
+          <span className="text-white">EIT AI</span>
         </span>
       </div>
 
@@ -62,7 +62,7 @@ export function LeftSidebar() {
       <div className="px-3 pb-3">
         <button
           onClick={handleNewChat}
-          className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-text-secondary hover:text-text-primary hover:bg-surface-2 transition-all duration-150 text-sm font-medium group"
+          className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-white hover:text-white hover:bg-surface-2 transition-all duration-150 text-sm font-medium group"
           style={{ border: '1px solid #1a1a1a' }}
         >
           <span
@@ -77,7 +77,7 @@ export function LeftSidebar() {
 
       {/* Divider + section label */}
       <div className="px-4 pb-2">
-        <p className="text-[10px] font-medium text-text-muted uppercase tracking-widest">
+        <p className="text-[10px] font-medium text-white/50 uppercase tracking-widest">
           Recent
         </p>
       </div>
@@ -87,7 +87,7 @@ export function LeftSidebar() {
         {state.chats.length === 0 ? (
           <div className="flex flex-col items-center justify-center gap-2 py-10 px-4">
             <MessagesSquareIcon className="w-5 h-5 text-text-faint" />
-            <p className="text-text-muted text-xs text-center leading-relaxed">
+            <p className="text-white/40 text-xs text-center leading-relaxed">
               No conversations yet
             </p>
           </div>
@@ -113,7 +113,7 @@ export function LeftSidebar() {
               >
                 <span
                   className={`flex-1 truncate text-xs pr-6 leading-relaxed ${
-                    isActive ? 'text-text-primary' : 'text-text-secondary'
+                    isActive ? 'text-white' : 'text-white/70'
                   }`}
                 >
                   {chat.title}

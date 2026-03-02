@@ -52,7 +52,7 @@ export function ResourceItem({ resource, onDelete }: ResourceItemProps) {
       <div className="flex-1 min-w-0">
         <p
           className="text-xs truncate leading-tight"
-          style={{ color: '#c0c0c0' }}
+          style={{ color: '#ffffff' }}
           title={resource.name}
         >
           {resource.name}
@@ -64,11 +64,11 @@ export function ResourceItem({ resource, onDelete }: ResourceItemProps) {
           >
             {cfg.label}
           </span>
-          <span className="text-[10px] text-text-muted">
+          <span className="text-[10px] text-white/40">
             {formatBytes(resource.size)}
           </span>
           {resource.chatId === null && (
-            <span className="text-[10px] text-text-muted">· global</span>
+            <span className="text-[10px] text-white/40">· global</span>
           )}
         </div>
       </div>

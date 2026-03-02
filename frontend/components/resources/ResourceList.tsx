@@ -21,10 +21,10 @@ export function ResourceList() {
           <UploadIcon className="w-4 h-4 text-text-muted" />
         </div>
         <div className="text-center space-y-1">
-          <p className="text-xs font-medium" style={{ color: '#a0a0a0' }}>
+          <p className="text-xs font-medium" style={{ color: '#ffffff' }}>
             No files yet
           </p>
-          <p className="text-[11px] text-text-muted leading-relaxed">
+          <p className="text-[11px] text-white/40 leading-relaxed">
             Upload PDF, TXT, or MD files to ground the AI in your course materials
           </p>
         </div>

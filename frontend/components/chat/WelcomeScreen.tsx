@@ -75,7 +75,10 @@ export function WelcomeScreen({ onSend, isTyping = false }: WelcomeScreenProps) 
             key={text}
             onClick={() => handleSend(text)}
             disabled={isTyping}
-            className="group flex items-start gap-3 text-left p-4 rounded-2xl border border-border bg-surface-1 hover:border-border-bright hover:bg-surface-2 transition-all duration-200 text-sm disabled:opacity-40 disabled:cursor-not-allowed"
+            className="group flex items-start gap-3 text-left p-4 rounded-2xl border border-transparent hover:border-border-bright transition-all duration-200 text-sm disabled:opacity-40 disabled:cursor-not-allowed"
+            style={{ background: '#1c1c1c' }}
+            onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.background = '#222222')}
+            onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.background = '#1c1c1c')}
           >
             <span className="mt-0.5 p-1.5 rounded-lg bg-brand-muted text-brand shrink-0">
               <Icon className="w-3.5 h-3.5" />

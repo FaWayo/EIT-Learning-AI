@@ -18,7 +18,7 @@ export function RightSidebar() {
       {/* Header */}
       <div className="px-4 pt-4 pb-3 space-y-3">
         <div className="flex items-center justify-between">
-          <p className="text-[10px] font-medium text-text-muted uppercase tracking-widest">
+          <p className="text-[10px] font-medium text-white/50 uppercase tracking-widest">
             Knowledge Base
           </p>
         </div>

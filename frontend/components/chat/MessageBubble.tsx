@@ -34,7 +34,7 @@ export function MessageBubble({ message }: MessageBubbleProps) {
             border: '1px solid #252525',
           }}
         >
-          <p className="text-text-primary text-sm whitespace-pre-wrap leading-relaxed">
+          <p className="text-white text-sm whitespace-pre-wrap leading-relaxed">
             {message.content}
           </p>
           <time className="text-text-muted text-[10px] mt-1.5 block text-right">
@@ -59,7 +59,7 @@ export function MessageBubble({ message }: MessageBubbleProps) {
 
       {/* Message content */}
       <div className="flex-1 min-w-0 pt-1">
-        <p className="text-text-primary text-sm leading-relaxed whitespace-pre-wrap">
+        <p className="text-white text-sm leading-relaxed whitespace-pre-wrap">
           {message.content}
         </p>
         <time className="text-text-muted text-[10px] mt-1.5 block">

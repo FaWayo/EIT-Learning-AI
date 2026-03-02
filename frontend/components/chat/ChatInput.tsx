@@ -41,10 +41,8 @@ export function ChatInput({ onSend, disabled = false, value, onChange }: ChatInp
         background: 'rgba(14,14,14,0.90)',
         backdropFilter: 'blur(12px)',
         WebkitBackdropFilter: 'blur(12px)',
-        borderColor: hasContent ? 'rgba(37,173,145,0.35)' : '#1f1f1f',
-        boxShadow: hasContent
-          ? '0 0 0 1px rgba(37,173,145,0.10), 0 4px 20px rgba(0,0,0,0.40)'
-          : '0 4px 20px rgba(0,0,0,0.30)',
+        borderColor: 'rgba(37,173,145,0.45)',
+        boxShadow: '0 0 0 1px rgba(37,173,145,0.15), 0 0 20px rgba(37,173,145,0.10), 0 4px 20px rgba(0,0,0,0.40)',
       }}
     >
       <textarea
