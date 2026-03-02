@@ -1,0 +1,30 @@
+ [build-system]
+ requires = ["setuptools>=61.0"]
+ build-backend = "setuptools.build_meta"
+
+ [project]
+ name = "rag-backend"
+ version = "0.1.0"
+ description = "Async multimodal RAG backend using FastAPI, SQLite, ChromaDB, and Gemini"
+ requires-python = ">=3.10"
+ dependencies = [
+     "fastapi",
+     "uvicorn[standard]",
+     "pydantic",
+     "sqlalchemy",
+     "alembic",
+     "chromadb",
+     "celery",
+     "redis",
+     "python-multipart",
+     "httpx",
+ ]
+
+ [project.optional-dependencies]
+ dev = [
+     "pytest",
+     "black",
+     "isort",
+     "mypy",
+ ]
+

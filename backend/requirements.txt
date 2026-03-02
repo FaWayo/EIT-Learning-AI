@@ -1,0 +1,14 @@
+fastapi
+uvicorn[standard]
+pydantic
+sqlalchemy
+alembic
+chromadb
+celery
+redis
+python-multipart
+httpx
+pypdf
+python-docx
+pydantic-settings
+python-dotenv
