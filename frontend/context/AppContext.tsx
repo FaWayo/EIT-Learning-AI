@@ -13,6 +13,8 @@ import {
   createChat,
   deleteChat,
   sendMessage,
+  getChats,
+  saveChatsToStorage,
 } from '@/services/chatService';
 import {
   getResources,
@@ -113,6 +115,18 @@ const AppContext = createContext<AppContextValue | null>(null);
 export function AppProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(appReducer, initialState);
   const pollingTimers = useRef<Map<string, NodeJS.Timeout>>(new Map());
+
+  // Load chats from localStorage on mount
+  useEffect(() => {
+    getChats().then((chats) => {
+      dispatch({ type: 'LOAD_CHATS', payload: chats });
+    });
+  }, []);
+
+  // Persist chats to localStorage whenever they change
+  useEffect(() => {
+    saveChatsToStorage(state.chats);
+  }, [state.chats]);
 
   // Load initial resources from backend on mount
   useEffect(() => {

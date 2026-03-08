@@ -1,9 +1,39 @@
-import { Chat, Message, BackendQueryResponse } from '@/types';
+import { Chat, Message, BackendQueryResponse, Citation } from '@/types';
 import { apiPost } from './apiClient';
 
+const CHATS_STORAGE_KEY = 'eit-learning-ai-chats';
+
+function loadChatsFromStorage(): Chat[] {
+  if (typeof window === 'undefined') return [];
+  try {
+    const raw = localStorage.getItem(CHATS_STORAGE_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return parsed.map((c: Record<string, unknown>) => ({
+      ...c,
+      createdAt: new Date(c.createdAt as string),
+      updatedAt: new Date(c.updatedAt as string),
+      messages: (c.messages as Record<string, unknown>[]).map((m) => ({
+        ...m,
+        timestamp: new Date(m.timestamp as string),
+      })),
+    }));
+  } catch {
+    return [];
+  }
+}
+
+export function saveChatsToStorage(chats: Chat[]): void {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.setItem(CHATS_STORAGE_KEY, JSON.stringify(chats));
+  } catch {
+    // Ignore quota errors
+  }
+}
+
 export async function getChats(): Promise<Chat[]> {
-  // Chats are frontend-only; no backend persistence
-  return [];
+  return loadChatsFromStorage();
 }
 
 export async function createChat(firstMessage: string): Promise<Chat> {
@@ -22,7 +52,7 @@ export async function createChat(firstMessage: string): Promise<Chat> {
 }
 
 export async function deleteChat(_chatId: string): Promise<void> {
-  // Frontend-only — no backend call needed
+  // Storage sync handled by AppContext effect
 }
 
 export async function sendMessage(
@@ -41,7 +71,7 @@ export async function sendMessage(
 
   const response = await apiPost<BackendQueryResponse>('/query', body);
 
-  const citations: Citation[] = response.citations || [];
+  const citations: Citation[] = (response.citations || []);
 
   const message: Message = {
     id: `msg-${Date.now()}`,
