@@ -65,20 +65,22 @@ class IngestionService:
                 chunk_models.append(chunk)
                 ids.append(chunk.embedding_id)
                 vectors.append(emb)
-                metadatas.append(
-                    {
-                        "document_id": document.id,
-                        "document_title": document.title,
-                        "content_type": document.content_type,
-                        "chunk_index": c_def.chunk_index,
-                        "page_number": c_def.page_number,
-                        "section_heading": c_def.section_heading,
-                        "start_time_sec": c_def.start_time_sec,
-                        "end_time_sec": c_def.end_time_sec,
-                        # store text in metadata to avoid extra DB read in query path
-                        "text": c_def.text,
-                    }
-                )
+                meta = {
+                    "document_id": document.id,
+                    "document_title": document.title,
+                    "content_type": document.content_type,
+                    "chunk_index": c_def.chunk_index,
+                    "text": c_def.text,
+                }
+                if c_def.page_number is not None:
+                    meta["page_number"] = c_def.page_number
+                if c_def.section_heading is not None:
+                    meta["section_heading"] = c_def.section_heading
+                if c_def.start_time_sec is not None:
+                    meta["start_time_sec"] = c_def.start_time_sec
+                if c_def.end_time_sec is not None:
+                    meta["end_time_sec"] = c_def.end_time_sec
+                metadatas.append(meta)
 
             # Persist vectors to Chroma
             if ids:

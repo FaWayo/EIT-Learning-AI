@@ -1,7 +1,7 @@
 'use client';
 
 import { Trash2Icon, FileTextIcon, FileIcon, Hash } from 'lucide-react';
-import { Resource } from '@/types';
+import { Resource, ProcessingStatus } from '@/types';
 
 function formatBytes(bytes: number): string {
   if (bytes === 0) return '0 B';
@@ -20,6 +20,16 @@ const TYPE_CONFIG: Record<
   md: { label: 'MD', icon: Hash, color: '#25ad91', bg: 'rgba(37,173,145,0.10)' },
 };
 
+const STATUS_CONFIG: Record<
+  ProcessingStatus,
+  { label: string; color: string; bg: string; pulse?: boolean }
+> = {
+  queued: { label: 'Queued', color: '#888', bg: 'rgba(136,136,136,0.10)' },
+  processing: { label: 'Processing...', color: '#f59e0b', bg: 'rgba(245,158,11,0.10)', pulse: true },
+  processed: { label: 'Ready', color: '#22c55e', bg: 'rgba(34,197,94,0.10)' },
+  failed: { label: 'Failed', color: '#ef4444', bg: 'rgba(239,68,68,0.10)' },
+};
+
 interface ResourceItemProps {
   resource: Resource;
   onDelete: (id: string) => void;
@@ -28,6 +38,7 @@ interface ResourceItemProps {
 export function ResourceItem({ resource, onDelete }: ResourceItemProps) {
   const cfg = TYPE_CONFIG[resource.type];
   const Icon = cfg.icon;
+  const statusCfg = STATUS_CONFIG[resource.status];
 
   return (
     <div
@@ -67,9 +78,12 @@ export function ResourceItem({ resource, onDelete }: ResourceItemProps) {
           <span className="text-[11px] text-white/40">
             {formatBytes(resource.size)}
           </span>
-          {resource.chatId === null && (
-            <span className="text-[11px] text-white/40">· global</span>
-          )}
+          <span
+            className={`text-[11px] font-medium px-1.5 py-0.5 rounded${statusCfg.pulse ? ' animate-pulse' : ''}`}
+            style={{ color: statusCfg.color, background: statusCfg.bg }}
+          >
+            {statusCfg.label}
+          </span>
         </div>
       </div>
 

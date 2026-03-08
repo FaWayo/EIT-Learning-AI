@@ -6,10 +6,10 @@ import React, {
   useReducer,
   useEffect,
   useCallback,
+  useRef,
 } from 'react';
-import { AppState, AppAction, AppContextValue, ResourceScope } from '@/types';
+import { AppState, AppAction, AppContextValue, ResourceScope, ProcessingStatus } from '@/types';
 import {
-  getChats,
   createChat,
   deleteChat,
   sendMessage,
@@ -18,6 +18,7 @@ import {
   getResources,
   uploadResource,
   deleteResource,
+  getDocumentStatus,
 } from '@/services/resourceService';
 
 // ─── Initial State ────────────────────────────────────────────────────────────
@@ -26,6 +27,7 @@ const initialState: AppState = {
   activeChatId: null,
   resources: [],
   isTyping: false,
+  error: null,
   leftSidebarOpen: true,
   rightSidebarOpen: true,
 };
@@ -81,6 +83,19 @@ function appReducer(state: AppState, action: AppAction): AppState {
         resources: state.resources.filter((r) => r.id !== action.payload),
       };
 
+    case 'UPDATE_RESOURCE_STATUS':
+      return {
+        ...state,
+        resources: state.resources.map((r) =>
+          r.id === action.payload.id
+            ? { ...r, status: action.payload.status }
+            : r,
+        ),
+      };
+
+    case 'SET_ERROR':
+      return { ...state, error: action.payload };
+
     case 'TOGGLE_LEFT_SIDEBAR':
       return { ...state, leftSidebarOpen: !state.leftSidebarOpen };
 
@@ -97,20 +112,59 @@ const AppContext = createContext<AppContextValue | null>(null);
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(appReducer, initialState);
+  const pollingTimers = useRef<Map<string, NodeJS.Timeout>>(new Map());
 
-  // Load initial data on mount
+  // Load initial resources from backend on mount
   useEffect(() => {
-    getChats().then((chats) =>
-      dispatch({ type: 'LOAD_CHATS', payload: chats }),
-    );
-    getResources().then((resources) =>
-      dispatch({ type: 'LOAD_RESOURCES', payload: resources }),
-    );
-  }, []);
+    getResources()
+      .then((resources) => {
+        dispatch({ type: 'LOAD_RESOURCES', payload: resources });
+        // Start polling for any resources that are still processing
+        resources.forEach((r) => {
+          if (r.status === 'queued' || r.status === 'processing') {
+            startPolling(r.backendId);
+          }
+        });
+      })
+      .catch((err) => {
+        console.error('Failed to load resources:', err);
+      });
+
+    return () => {
+      // Cleanup all polling timers on unmount
+      pollingTimers.current.forEach((timer) => clearInterval(timer));
+      pollingTimers.current.clear();
+    };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Poll document status until processed or failed
+  function startPolling(documentId: string) {
+    if (pollingTimers.current.has(documentId)) return;
+
+    const timer = setInterval(async () => {
+      try {
+        const status: ProcessingStatus = await getDocumentStatus(documentId);
+        dispatch({
+          type: 'UPDATE_RESOURCE_STATUS',
+          payload: { id: documentId, status },
+        });
+
+        if (status === 'processed' || status === 'failed') {
+          clearInterval(pollingTimers.current.get(documentId));
+          pollingTimers.current.delete(documentId);
+        }
+      } catch {
+        // If polling fails, stop silently
+        clearInterval(pollingTimers.current.get(documentId));
+        pollingTimers.current.delete(documentId);
+      }
+    }, 3000);
+
+    pollingTimers.current.set(documentId, timer);
+  }
 
   // ─── Async convenience actions ──────────────────────────────────────────────
 
-  // Returns the chatId (new or existing) so callers can navigate
   const handleSendMessage = useCallback(
     async (content: string): Promise<string> => {
       let chatId = state.activeChatId;
@@ -131,25 +185,52 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       };
       dispatch({ type: 'ADD_MESSAGE', payload: userMsg });
       dispatch({ type: 'SET_TYPING', payload: true });
+      dispatch({ type: 'SET_ERROR', payload: null });
 
       try {
-        const assistantMsg = await sendMessage(chatId, content);
+        // Collect document IDs from processed resources
+        const documentIds = state.resources
+          .filter((r) => r.status === 'processed')
+          .map((r) => r.backendId);
+
+        const assistantMsg = await sendMessage(chatId, content, documentIds);
         dispatch({ type: 'ADD_MESSAGE', payload: assistantMsg });
+      } catch (err) {
+        const errorMessage =
+          err instanceof Error ? err.message : 'Failed to get a response. Please try again.';
+        dispatch({ type: 'SET_ERROR', payload: errorMessage });
+        // Add an error message as assistant response so the user sees it in chat
+        const errorMsg = {
+          id: `msg-${Date.now()}-err`,
+          chatId,
+          role: 'assistant' as const,
+          content: `Sorry, I couldn't process your request. ${errorMessage}`,
+          timestamp: new Date(),
+        };
+        dispatch({ type: 'ADD_MESSAGE', payload: errorMsg });
       } finally {
         dispatch({ type: 'SET_TYPING', payload: false });
       }
 
       return chatId;
     },
-    [state.activeChatId],
+    [state.activeChatId, state.resources],
   );
 
   const handleUploadResource = useCallback(
     async (file: File, scope: ResourceScope) => {
-      const resource = await uploadResource(file, state.activeChatId, scope);
-      dispatch({ type: 'ADD_RESOURCE', payload: resource });
+      try {
+        const resource = await uploadResource(file, state.activeChatId, scope);
+        dispatch({ type: 'ADD_RESOURCE', payload: resource });
+        // Start polling for ingestion status
+        startPolling(resource.backendId);
+      } catch (err) {
+        const errorMessage =
+          err instanceof Error ? err.message : 'Failed to upload file.';
+        dispatch({ type: 'SET_ERROR', payload: errorMessage });
+      }
     },
-    [state.activeChatId],
+    [state.activeChatId], // eslint-disable-line react-hooks/exhaustive-deps
   );
 
   const handleDeleteChat = useCallback(async (chatId: string) => {
@@ -160,6 +241,12 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const handleDeleteResource = useCallback(async (resourceId: string) => {
     await deleteResource(resourceId);
     dispatch({ type: 'DELETE_RESOURCE', payload: resourceId });
+    // Stop polling if running
+    const timer = pollingTimers.current.get(resourceId);
+    if (timer) {
+      clearInterval(timer);
+      pollingTimers.current.delete(resourceId);
+    }
   }, []);
 
   return (

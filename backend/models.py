@@ -1,13 +1,14 @@
+import enum
 import uuid
 from datetime import datetime
- 
-from sqlalchemy import JSON, Column, DateTime, Enum, Float, ForeignKey, Integer, String, Text
+
+from sqlalchemy import JSON, Column, DateTime, Float, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import relationship
- 
+
 from db import Base
- 
- 
-class DocumentStatus(str, Enum):
+
+
+class DocumentStatus(str, enum.Enum):
     QUEUED = "queued"
     PROCESSING = "processing"
     PROCESSED = "processed"
@@ -54,7 +55,7 @@ class Chunk(Base):
     document = relationship("Document", back_populates="chunks")
  
  
-class IngestionJobStatus(str, Enum):
+class IngestionJobStatus(str, enum.Enum):
     QUEUED = "queued"
     RUNNING = "running"
     SUCCEEDED = "succeeded"

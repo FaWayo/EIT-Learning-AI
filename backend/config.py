@@ -24,7 +24,7 @@ class Settings(BaseSettings):
  
      # Gemini / Google GenAI
      gemini_api_key: str = Field(..., env="GEMINI_API_KEY")
-     gemini_embeddings_model: str = "models/embedding-001"
+     gemini_embeddings_model: str = "models/gemini-embedding-001"
      gemini_chat_model: str = "gemini-3-flash-preview"
  
      class Config:

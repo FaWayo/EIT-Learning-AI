@@ -14,17 +14,21 @@ class GeminiEmbeddingClient:
 
     async def embed_texts(self, texts: Sequence[str]) -> List[List[float]]:
         """
-        Call Gemini embeddings API for a batch of texts.
+        Call Gemini embeddings API for each text individually using embedContent.
         """
-        url = f"{self._base_url}/{self.model}:batchEmbedContents?key={self.api_key}"
-        payload = {
-            "requests": [{"model": self.model, "content": {"parts": [{"text": t}]}} for t in texts]
-        }
+        embeddings: List[List[float]] = []
         async with httpx.AsyncClient(timeout=30) as client:
-            resp = await client.post(url, json=payload)
-            resp.raise_for_status()
-            data = resp.json()
-        return [item["values"] for item in data.get("embeddings", [])]
+            for text in texts:
+                url = f"{self._base_url}/{self.model}:embedContent?key={self.api_key}"
+                payload = {
+                    "model": self.model,
+                    "content": {"parts": [{"text": text}]},
+                }
+                resp = await client.post(url, json=payload)
+                resp.raise_for_status()
+                data = resp.json()
+                embeddings.append(data["embedding"]["values"])
+        return embeddings
 
 
 class GeminiChatClient:
@@ -46,10 +50,12 @@ class GeminiChatClient:
         url = f"{self._base_url}/models/{self.model}:generateContent?key={self.api_key}"
         context_text = "\n\n".join(context_blocks)
         contents = [
-            {"role": "system", "parts": [{"text": system_instruction}]},
             {"role": "user", "parts": [{"text": f"{context_text}\n\nQuestion: {user_question}"}]},
         ]
-        payload = {"contents": contents}
+        payload = {
+            "system_instruction": {"parts": [{"text": system_instruction}]},
+            "contents": contents,
+        }
         async with httpx.AsyncClient(timeout=60) as client:
             resp = await client.post(url, json=payload)
             resp.raise_for_status()
@@ -59,4 +65,3 @@ class GeminiChatClient:
             return ""
         parts = candidates[0].get("content", {}).get("parts", [])
         return "".join(p.get("text", "") for p in parts)
-

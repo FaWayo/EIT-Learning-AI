@@ -35,10 +35,12 @@ class VectorStore:
         """
         Wrapper around Chroma query.
         """
-        return self._collection.query(
-            query_embeddings=list(query_embeddings),
-            n_results=n_results,
-            where=where or {},
-            include=["distances", "metadatas", "ids"],
-        )
+        kwargs: dict = {
+            "query_embeddings": list(query_embeddings),
+            "n_results": n_results,
+            "include": ["distances", "metadatas"],
+        }
+        if where:
+            kwargs["where"] = where
+        return self._collection.query(**kwargs)
 

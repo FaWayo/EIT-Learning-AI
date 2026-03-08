@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from config import get_settings
 from db import Base, engine
@@ -12,6 +13,14 @@ def create_app() -> FastAPI:
         title=settings.app_name,
         version="0.1.0",
         description="Async multimodal RAG backend with async ingestion and Gemini-powered query.",
+    )
+
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["http://localhost:3000"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
     )
 
     # Ensure tables are created (for development); in production, prefer migrations.
